@@ -13,6 +13,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <!--        <gotoSymbolContributor-->
+        <!--                implementation="org.intellij.sdk.language.SimpleChooseByNameContributor"/>-->
     </extensions>
 
     <actions>

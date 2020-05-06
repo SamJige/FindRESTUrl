@@ -27,6 +27,8 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
         MyList list = new MyList("Find Result", Arrays.asList(
                 new ListItem("aa")
                 , new ListItem("bb")
+                , new ListItem("cc")
+                , new ListItem("dd")
         ));
         JBPopupFactory.getInstance().createListPopup(list).showInBestPositionFor(e.getDataContext());
     }
