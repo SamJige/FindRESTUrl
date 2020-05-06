@@ -1,0 +1,21 @@
+<idea-plugin>
+    <id>org.jige.FindRESTUrl</id>
+    <name>FindRESTUrl</name>
+    <vendor email="yhy90923@163.com" url="https://github.com/SamJige">SamJige</vendor>
+
+    <description><![CDATA[
+    same tool of https://github.com/mrmanzhaow/RestfulToolkit
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
