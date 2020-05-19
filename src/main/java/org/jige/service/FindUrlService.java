@@ -24,6 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Arrays;
 
 public class FindUrlService extends AnAction implements ChooseByNameContributorEx {
 
@@ -74,7 +77,7 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
 
         jScrollPane1.setViewportView(jList1);
         jList1.setModel(new javax.swing.AbstractListModel<>() {
-            String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+            String[] strings = {};
 
             public int getSize() {
                 return strings.length;
@@ -84,6 +87,28 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                 return strings[i];
             }
         });
+        //监听输入框事件
+        jTextField1.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = jTextField1.getText();
+                jList1.setListData(Arrays.asList(text + "1", text + "2", text + "3").toArray(new String[0]));
+            }
+        });
+//        jTextField1.addActionListener(event -> {
+//            String text = jTextField1.getText();
+//            jList1.setListData(Arrays.asList(text + "1", text + "2", text + "3").toArray(new String[0]));
+//        });
+        //监听列表点击事件
         jList1.addListSelectionListener((event) -> {
             int firstIdx = event.getFirstIndex();
             int lastIdx = event.getFirstIndex();
