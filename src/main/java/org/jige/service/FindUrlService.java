@@ -84,6 +84,10 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                 return strings[i];
             }
         });
+        jList1.addListSelectionListener((event) -> {
+            int firstIdx = event.getFirstIndex();
+            int lastIdx = event.getFirstIndex();
+        });
         /////////////////////////////////////////////////////////////
         // 构造弹出框 使用netbeans构造再copy
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
