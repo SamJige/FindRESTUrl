@@ -12,9 +12,12 @@ import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.Processor;
 import com.intellij.util.indexing.FindSymbolParameters;
 import com.intellij.util.indexing.IdFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +30,7 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
     public void actionPerformed(AnActionEvent e) {
         //获取当前在操作的工程上下文
         Project project = e.getData(PlatformDataKeys.PROJECT);
-        createPopup().showInBestPositionFor(e.getDataContext());
+        createPopup("text").showInBestPositionFor(e.getDataContext());
     }
 
 //    @NotNull
@@ -59,11 +62,13 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
      * https://www.programcreek.com/java-api-examples/index.php?api=com.intellij.openapi.ui.popup.JBPopup
      */
     @NotNull
-    JBPopup createPopup() {
+    JBPopup createPopup(String currentText) {
         JTextField jTextField1 = new JTextField();
-        JScrollPane jScrollPane1 = new JScrollPane();
-        JList<String> jList1 = new JList<>();
-
+        JScrollPane jScrollPane1 = new JBScrollPane();
+        JList<String> jList1 = new JBList<>();
+        if (StringUtils.isNotBlank(currentText)) {
+            jTextField1.setText(currentText);
+        }
         JPanel panel = new JPanel(new BorderLayout());
 
         jScrollPane1.setViewportView(jList1);
