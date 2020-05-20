@@ -1,3 +1,5 @@
+package org.jige.test;
+
 import com.intellij.openapi.project.Project;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.jige.service.SearchFileService;

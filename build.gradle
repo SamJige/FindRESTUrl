@@ -9,7 +9,8 @@ version '1.0'
 intellij {
     version '2020.1'
     localPath 'D:\\sft\\ideaIC-2020.1.win'
-    plugins = ['java', 'Kotlin', 'yaml', 'properties']
+    plugins = ['java', 'yaml', 'properties']
+    //JavaFileType
 }
 patchPluginXml {
     changeNotes """
