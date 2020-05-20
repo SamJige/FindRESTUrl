@@ -34,6 +34,10 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
     public void actionPerformed(AnActionEvent e) {
         //获取当前在操作的工程上下文
         Project project = e.getData(PlatformDataKeys.PROJECT);
+
+        SearchFileService searchFileService = new SearchFileService();
+        searchFileService.searchFile(project);
+
         createPopup("text").showInBestPositionFor(e.getDataContext());
     }
 
