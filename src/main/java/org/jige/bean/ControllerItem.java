@@ -1,6 +1,9 @@
 package org.jige.bean;
 
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiMethod;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -11,8 +14,10 @@ public class ControllerItem {
     public PsiJavaFile psiFile;
     public PsiClass psiClass;
     public PsiMethod psiMethod;
-    public Set<String> url = new HashSet<>(1);
+    public Set<String> url = new HashSet<>();
     public boolean isGoodItem = false;
+    Set<String> controllerUrlList = new HashSet<>();
+    Set<String> mtdUrlList = new HashSet<>();
 
     public ControllerItem(PsiJavaFile psiFile, PsiClass psiClass, PsiMethod psiMethod) {
         this.psiFile = psiFile;
@@ -32,31 +37,32 @@ public class ControllerItem {
         if (psiClass == null) {
             return this;
         }
-        Set<String> controllerUrlList = new HashSet<>();
-        Set<String> mtdUrlList = new HashSet<>();
 
         //找controller mapping
-        Optional<PsiAnnotation> crlAnno = Stream.of(psiClass.getAnnotations())
+        Stream.of(psiClass.getAnnotations())
                 .filter(Objects::nonNull)
                 .filter(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Mapping"))
-                .findAny();
-        if (crlAnno.isPresent()) {
-            controllerUrlList = getUrlFromAnno(crlAnno.get());
-        }
+                .findAny()
+                .ifPresent(psiAnnotation -> controllerUrlList.addAll(getUrlFromAnno(psiAnnotation)));
+        Stream.of(psiClass.getAnnotations())
+                .filter(Objects::nonNull)
+                .filter(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Controller"))
+                .findAny()
+                .ifPresent(psiAnnotation -> controllerUrlList.addAll(getUrlFromAnno(psiAnnotation)));
+
         //找method mapping
         if (psiMethod != null) {
-            Optional<PsiAnnotation> mtdAnno = Stream.of(psiMethod.getAnnotations())
+            Stream.of(psiMethod.getAnnotations())
                     .filter(Objects::nonNull)
                     .filter(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Mapping"))
-                    .findAny();
-            if (mtdAnno.isPresent()) {
-                mtdUrlList = getUrlFromAnno(mtdAnno.get());
-            }
+                    .findAny()
+                    .ifPresent(psiAnnotation -> mtdUrlList.addAll(getUrlFromAnno(psiAnnotation)));
         }
 
-        url = controllerUrlList;
+        url.addAll(controllerUrlList);
         if (controllerUrlList.size() == 0) {
-            url = mtdUrlList;
+            url.clear();
+            url.addAll(mtdUrlList);
         } else {
             url.clear();
             if (mtdUrlList.size() == 0) {
@@ -89,14 +95,18 @@ public class ControllerItem {
                 .filter(it -> it.psiMethod != null);
     }
 
-    private Set<String> getUrlFromAnno(PsiAnnotation annotation) {
-        PsiAnnotationMemberValue value = annotation.findAttributeValue("value");
-        if (value == null) {
-            return Collections.emptySet();
-        }
-        return Stream.of(value.getChildren())
-                .map(PsiElement::getText)
+    private Stream<String> fixUrlStream(Stream<String> rawUrl) {
+        return rawUrl
                 .filter(StringUtils::isNotBlank)
+                .map(it -> {
+                    if (it.startsWith("{") && it.endsWith("}")) {
+                        it = it.substring(1, it.length() - 1);
+                    }
+                    return it;
+                })
+                .flatMap(it -> Stream.of(StringUtils.split(it, ",")))
+                .filter(StringUtils::isNotBlank)
+                .map(String::trim)
                 .map(it -> {
                     if (it.startsWith("\"")) {
                         it = it.substring(1);
@@ -106,20 +116,32 @@ public class ControllerItem {
                     }
                     return it;
                 })
-                .filter(it -> !"{".equals(it))
-                .filter(it -> !"}".equals(it))
-                .filter(it -> !",".equals(it))
                 .filter(StringUtils::isNotBlank)
-                .distinct()
+                .distinct();
+    }
+
+    private Set<String> getUrlFromAnno(PsiAnnotation annotation) {
+        List<String> valueList =
+                Stream.of(annotation.findAttributeValue("value"))
+                        .map(it -> it.getText())
+                        .peek(it -> System.out.println("value:" + it))
+//                        .filter(it -> it.getAttributeName().equals("value"))
+//                        .map(PsiNameValuePair::getLiteralValue)
+                        .collect(Collectors.toList());
+        if (valueList.size() == 0) {
+            return Collections.emptySet();
+        }
+        return fixUrlStream(valueList.stream())
                 .collect(Collectors.toSet());
     }
 
     public String toString() {
-        return String.format("[%s] --> [%s.%s()] --> [file:%s]",
-                arrToString(url),
+        return String.format("[%s.%s()] -->\t [file:%s] \tcontrollerUrlList:%s \tmtdUrlList:%s --> \t[%s] ",
                 psiClass != null ? psiClass.getName() : "null",
                 psiMethod != null ? psiMethod.getName() : "null",
-                psiFile != null ? psiFile.getName() : "null");
+                psiFile != null ? psiFile.getName() : "null",
+                StringUtils.join(controllerUrlList, ","),
+                StringUtils.join(mtdUrlList, ","), arrToString(url));
     }
 
     private String arrToString(Collection<String> collection) {

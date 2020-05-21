@@ -37,16 +37,27 @@ public class SearchFileService {
 //                        LoggerFactory.getLogger(getClass()).info("keys -> {}", keys.size());
                         long begin = new Date().getTime();
 
-                        FileTypeIndex.getFiles(StdFileTypes.JAVA, GlobalSearchScope.projectScope(project))
+                        List<ControllerItem> fileList = FileTypeIndex.getFiles(StdFileTypes.JAVA, GlobalSearchScope.projectScope(project))
                                 .stream()
                                 .map(it -> new ControllerItem((PsiJavaFile) PsiManager.getInstance(project).findFile(it), null, null))
                                 .filter(file -> file.psiFile != null)
+//                                .peek(it -> System.out.println("it " + it.toString()))
+                                .collect(Collectors.toList());
+
+                        List<ControllerItem> clazzList = fileList.stream()
                                 .flatMap(ControllerItem::genClass)
+//                                .peek(it -> System.out.println("it2 " + it.toString()))
+                                .collect(Collectors.toList());
+
+                        List<ControllerItem> annoList = clazzList.stream()
                                 .flatMap(ControllerItem::genMethods)
+                                .peek(it -> System.out.println("it3 " + it.toString()))
                                 .filter(it -> it.isGoodItem)
-                                .forEach(it -> {
-                                    notifier.notify(project, it.toString());
-                                });
+                                .collect(Collectors.toList());
+
+                        annoList.forEach(it -> {
+                            System.out.println("final " + it.toString());
+                        });
 
                         LoggerFactory.getLogger(getClass()).info("time cost -> {}ms", new Date().getTime() - begin);
                         notifier.notify(project, "time cost(ms):" + (new Date().getTime() - begin));

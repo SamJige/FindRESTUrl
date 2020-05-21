@@ -17,6 +17,10 @@
         <!--        <fileBasedIndex implementation="org.jige.service.ControllerIndex"/>-->
     </extensions>
 
+    <applicationListeners>
+        <listener class="org.jige.service.ReloadListener" topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+    </applicationListeners>
+
     <actions>
         <!-- Add your actions here -->
         <action id="Jige.FindUrl" class="org.jige.service.FindUrlService" text="FindUrl" description="Find REST url">
