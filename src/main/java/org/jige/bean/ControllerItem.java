@@ -68,6 +68,7 @@ public class ControllerItem {
             if (mtdUrlList.size() == 0) {
                 mtdUrlList.add("/");
             }
+            //如果controller里面有url配置 要跟函数里面的url 组合起来
             for (String controllerUrl : controllerUrlList) {
                 for (String mtdUrl : mtdUrlList) {
                     url.add((controllerUrl.endsWith("/") ? controllerUrl : controllerUrl + "/")
@@ -95,6 +96,14 @@ public class ControllerItem {
                 .filter(it -> it.psiMethod != null);
     }
 
+    /**
+     * 从注解里面读取url
+     * 包含几种情况
+     * ("/xxx")
+     * (value="/xxx")
+     * ({"/xxx","/xxxx"})
+     * (value={"/xxx","/xxxx"})
+     */
     private Stream<String> fixUrlStream(Stream<String> rawUrl) {
         return rawUrl
                 .filter(StringUtils::isNotBlank)
