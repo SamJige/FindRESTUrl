@@ -10,11 +10,11 @@
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-        <!--        <gotoSymbolContributor-->
-        <!--                implementation="org.intellij.sdk.language.SimpleChooseByNameContributor"/>-->
+        <!--        //注册一个index 先不用这种方式-->
+        <!--        <fileBasedIndex implementation="org.jige.service.ControllerIndex"/>-->
     </extensions>
 
     <actions>
