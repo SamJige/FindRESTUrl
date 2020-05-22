@@ -13,8 +13,8 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      1.0 支持搜索java controller 里面的url 搜索可能不精确 实现思路是搜索注解名字包含controller/mapping的类和函数 然后获取里面的value值 
+      """
 }
 test {
     systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.1.win"
