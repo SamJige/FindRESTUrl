@@ -3,7 +3,7 @@ package org.jige.test;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.openapi.project.Project;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import org.jige.service.SearchFileService;
+import org.jige.service.FileLoader;
 import org.slf4j.LoggerFactory;
 
 public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
@@ -18,7 +18,7 @@ public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
 
         Project project = getProject();
         LoggerFactory.getLogger(getClass()).info("test1 -> start");
-        SearchFileService searchFileService = new SearchFileService();
-        searchFileService.searchFile(getProject());
+        FileLoader fileLoader = new FileLoader();
+        fileLoader.loadFile(getProject());
     }
 }

@@ -17,11 +17,19 @@ public class ControllerItem {
     Set<String> controllerUrlList = new HashSet<>();
     Set<String> mtdUrlList = new HashSet<>();
 
+    public ControllerItem() {
+    }
+
     public ControllerItem(PsiJavaFile psiFile, PsiClass psiClass, PsiMethod psiMethod) {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
         findMyUrl();
+    }
+
+    public ControllerItem testInit(String... testUrl) {
+        url.addAll(Stream.of(testUrl).collect(Collectors.toSet()));
+        return this;
     }
 
     /**

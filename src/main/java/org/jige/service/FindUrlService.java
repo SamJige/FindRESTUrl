@@ -21,26 +21,33 @@ import com.intellij.util.indexing.IdFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jige.bean.ControllerItem;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
+import java.util.List;
 
 public class FindUrlService extends AnAction implements ChooseByNameContributorEx {
+    FileLoader fileLoader = new FileLoader();
+    UrlSearchMatcher urlSearchMatcher = new UrlSearchMatcher();
 
     @Override
     public void actionPerformed(AnActionEvent e) {
         //获取当前在操作的工程上下文
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
-        SearchFileService searchFileService = new SearchFileService();
-        searchFileService.searchFile(project);
-
+        searchUrl(project, "info");
         createPopup("text").showInBestPositionFor(e.getDataContext());
     }
 
+    List<ControllerItem> searchUrl(Project project, String searchText) {
+        List<ControllerItem> allControllers = fileLoader.loadFile(project);
+        List<ControllerItem> searchResult = urlSearchMatcher.searchUrl(allControllers, searchText);
+        return null;
+    }
 //    @NotNull
 //    JBPopup createPopupBak() {
 //        JPanel panel = new JPanel(new BorderLayout());
