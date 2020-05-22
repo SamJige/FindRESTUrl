@@ -15,7 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jige.bean.ControllerItem;
 import org.jige.util.StringTools;
+import org.slf4j.LoggerFactory;
 
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,8 +33,17 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
         //获取当前在操作的工程上下文
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
+        String currentText = "";
+        try {
+            //获取当前复制的内容
+            currentText = (String) Toolkit.getDefaultToolkit()
+                    .getSystemClipboard().getData(DataFlavor.stringFlavor);
+        } catch (Exception error) {
+            LoggerFactory.getLogger(getClass()).error("error ->", error);
+        }
+
         popupDisplay.createPopup(
-                "",
+                currentText,
                 searchText -> {
                     if (StringUtils.isBlank(searchText)) {
                         popupDisplay.setListData(Collections.emptyList());
@@ -52,10 +64,21 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                 })
                 .showInBestPositionFor(e.getDataContext());
 
+        ////////
+        //如果已经有复制的内容 则马上开始搜
+        if (StringUtils.isNotBlank(currentText)) {
+            popupDisplay.setListData(Collections.emptyList());
+            searchUrl(
+                    project,
+                    currentText,
+                    list -> popupDisplay.setListData(list));
+        }
+        ////////////
         int listeners = popupDisplay.showResultList.getListSelectionListeners().length;
         StringTools.log("listeners ", listeners);
     }
 
+    //搜索功能 读取java文件 然后搜索指定的url
     void searchUrl(Project project, String searchText, Consumer<List<ControllerItem>> searchFinishedAct) {
         fileLoader.loadFile(
                 project,
