@@ -43,6 +43,16 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                             list -> popupDisplay.setListData(list));
                 },
                 (selected) -> {
+                    selected.psiMethod.navigate(true);
+//                    selected.psiMethod.accept(
+//                            new JavaRecursiveElementVisitor() {
+//                                @Override
+//                                public void visitLocalVariable(PsiLocalVariable variable) {
+//                                    super.visitLocalVariable(variable);
+//                                    StringTools.log("Found a variable at offset ", variable.getTextRange().getStartOffset());
+//                                }
+//                            }
+//                    );
                     StringTools.log("selected: ", selected.toString());
                 })
                 .showInBestPositionFor(e.getDataContext());

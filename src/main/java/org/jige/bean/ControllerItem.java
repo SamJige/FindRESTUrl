@@ -17,6 +17,10 @@ public class ControllerItem {
     Set<String> controllerUrlList = new HashSet<>();
     Set<String> mtdUrlList = new HashSet<>();
 
+    public String fileName;
+    public String className;
+    public String methodName;
+
     public ControllerItem() {
     }
 
@@ -24,6 +28,9 @@ public class ControllerItem {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
+        fileName = psiFile != null ? psiFile.getName() : null;
+        className = psiClass != null ? psiClass.getName() : null;
+        methodName = psiMethod != null ? psiMethod.getName() : null;
         findMyUrl();
     }
 
@@ -31,6 +38,9 @@ public class ControllerItem {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
+        fileName = psiFile != null ? psiFile.getName() : null;
+        className = psiClass != null ? psiClass.getName() : null;
+        methodName = psiMethod != null ? psiMethod.getName() : null;
         this.url = url;
     }
 
@@ -171,9 +181,9 @@ public class ControllerItem {
 
     public String toString() {
         return String.format("[%s.%s()] -->\t [file:%s] \tcontrollerUrlList:%s \tmtdUrlList:%s --> \t[%s] ",
-                psiClass != null ? psiClass.getName() : "null",
-                psiMethod != null ? psiMethod.getName() : "null",
-                psiFile != null ? psiFile.getName() : "null",
+                className,
+                methodName,
+                fileName,
                 StringUtils.join(controllerUrlList, ","),
                 StringUtils.join(mtdUrlList, ","), arrToString(urls));
     }
