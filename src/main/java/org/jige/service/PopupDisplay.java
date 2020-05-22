@@ -59,6 +59,10 @@ public class PopupDisplay {
 
     /**
      * https://www.programcreek.com/java-api-examples/index.php?api=com.intellij.openapi.ui.popup.JBPopup
+     *
+     * @param currentText  搜索
+     * @param searchAction 搜索功能的入口 传入输入框的内容
+     * @param naviToCode   跳转功能的入口 传入选择的项
      */
     @NotNull
     public JBPopup createPopup(String currentText, Consumer<String> searchAction, Consumer<ControllerItem> naviToCode) {
