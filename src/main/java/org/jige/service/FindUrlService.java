@@ -43,7 +43,11 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                             list -> popupDisplay.setListData(list));
                 },
                 (selected) -> {
-                    selected.psiMethod.navigate(true);
+                    if (selected.psiMethod != null) {
+                        selected.psiMethod.navigate(true);
+                    } else if (selected.psiClass != null) {
+                        selected.psiClass.navigate(true);
+                    }
                     StringTools.log("selected: ", selected.toString());
                 })
                 .showInBestPositionFor(e.getDataContext());
