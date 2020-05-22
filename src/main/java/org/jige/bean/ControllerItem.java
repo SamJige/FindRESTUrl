@@ -17,6 +17,7 @@ public class ControllerItem {
     Set<String> controllerUrlList = new HashSet<>();
     Set<String> mtdUrlList = new HashSet<>();
 
+    public String projectName;
     public String fileName;
     public String className;
     public String methodName;
@@ -28,6 +29,7 @@ public class ControllerItem {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
+        projectName = psiFile != null ? psiFile.getProject().getName() : null;
         fileName = psiFile != null ? psiFile.getName() : null;
         className = psiClass != null ? psiClass.getName() : null;
         methodName = psiMethod != null ? psiMethod.getName() : null;
@@ -38,6 +40,7 @@ public class ControllerItem {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
+        projectName = psiFile != null ? psiFile.getProject().getName() : null;
         fileName = psiFile != null ? psiFile.getName() : null;
         className = psiClass != null ? psiClass.getName() : null;
         methodName = psiMethod != null ? psiMethod.getName() : null;

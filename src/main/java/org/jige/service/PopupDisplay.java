@@ -38,7 +38,12 @@ public class PopupDisplay {
         data.addAll(dataIn);
 
         showResultList.setListData(data.stream()
-                .map(it -> it.url).toArray(String[]::new));
+                .map(it -> String.format("%s     #%s%s     %s",
+                        it.url,
+                        it.className,
+                        StringUtils.isNotBlank(it.methodName) ? "." + it.methodName : "",
+                        it.projectName))
+                .toArray(String[]::new));
     }
 
     abstract public static class MyKeyListener implements KeyListener {
