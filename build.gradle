@@ -19,3 +19,7 @@ patchPluginXml {
 test {
     systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.1.win"
 }
+//提交插件配置
+publishPlugin {
+    token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+}
