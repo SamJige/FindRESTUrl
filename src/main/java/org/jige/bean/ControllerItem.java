@@ -1,9 +1,6 @@
 package org.jige.bean;
 
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -81,19 +78,27 @@ public class ControllerItem {
         return this;
     }
 
+    //fixme 也可能被其他的注解干扰
     public Stream<ControllerItem> genClass() {
         //只找 有controller 注解的类
         return Stream.of(psiFile.getClasses())
-                .map(clazz -> new ControllerItem(psiFile, clazz, null))
-                .filter(it -> it.psiClass != null)
-                .filter(it -> Stream.of(it.psiClass.getAnnotations())
-                        .anyMatch(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Controller")));
+                .filter(Objects::nonNull)
+                //only public
+                .filter(clazz -> clazz.hasModifierProperty(PsiModifier.PUBLIC))
+                .filter(clazz -> Stream.of(clazz.getAnnotations())
+                        .anyMatch(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Controller")))
+                .map(clazz -> new ControllerItem(psiFile, clazz, null));
     }
 
+    //fixme 也可能被其他的注解干扰
     public Stream<ControllerItem> genMethods() {
         return Stream.of(psiClass.getMethods())
-                .map(mtd -> new ControllerItem(psiFile, psiClass, mtd))
-                .filter(it -> it.psiMethod != null);
+                .filter(Objects::nonNull)
+                //only public
+                .filter(mtd -> mtd.hasModifierProperty(PsiModifier.PUBLIC))
+                .filter(mtd -> Stream.of(mtd.getAnnotations())
+                        .anyMatch(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Mapping")))
+                .map(mtd -> new ControllerItem(psiFile, psiClass, mtd));
     }
 
     /**

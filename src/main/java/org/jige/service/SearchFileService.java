@@ -37,27 +37,24 @@ public class SearchFileService {
 //                        LoggerFactory.getLogger(getClass()).info("keys -> {}", keys.size());
                         long begin = new Date().getTime();
 
-                        List<ControllerItem> fileList = FileTypeIndex.getFiles(StdFileTypes.JAVA, GlobalSearchScope.projectScope(project))
+                        /*
+                        首先找到所有的java文件
+                        然后对文件进行筛选 找到全部的java类 要有controller注解
+                        然后找到controller类里面全部的方法 要有mapping注解
+                         */
+                        FileTypeIndex.getFiles(StdFileTypes.JAVA, GlobalSearchScope.projectScope(project))
                                 .stream()
                                 .map(it -> new ControllerItem((PsiJavaFile) PsiManager.getInstance(project).findFile(it), null, null))
                                 .filter(file -> file.psiFile != null)
 //                                .peek(it -> System.out.println("it " + it.toString()))
-                                .collect(Collectors.toList());
-
-                        List<ControllerItem> clazzList = fileList.stream()
                                 .flatMap(ControllerItem::genClass)
 //                                .peek(it -> System.out.println("it2 " + it.toString()))
-                                .collect(Collectors.toList());
-
-                        List<ControllerItem> annoList = clazzList.stream()
                                 .flatMap(ControllerItem::genMethods)
                                 .peek(it -> System.out.println("it3 " + it.toString()))
                                 .filter(it -> it.isGoodItem)
-                                .collect(Collectors.toList());
-
-                        annoList.forEach(it -> {
-                            System.out.println("final " + it.toString());
-                        });
+                                .forEach(it -> {
+                                    System.out.println("final " + it.toString());
+                                });
 
                         LoggerFactory.getLogger(getClass()).info("time cost -> {}ms", new Date().getTime() - begin);
                         notifier.notify(project, "time cost(ms):" + (new Date().getTime() - begin));
