@@ -2,6 +2,7 @@ package org.jige.bean;
 
 import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
+import org.jige.util.StringTools;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -137,10 +138,9 @@ public class ControllerItem {
     private Set<String> getUrlFromAnno(PsiAnnotation annotation) {
         List<String> valueList =
                 Stream.of(annotation.findAttributeValue("value"))
-                        .map(it -> it.getText())
-                        .peek(it -> System.out.println("value:" + it))
-//                        .filter(it -> it.getAttributeName().equals("value"))
-//                        .map(PsiNameValuePair::getLiteralValue)
+                        .filter(Objects::nonNull)
+                        .map(PsiElement::getText)
+                        .peek(it -> StringTools.log("value: ", it))
                         .collect(Collectors.toList());
         if (valueList.size() == 0) {
             return Collections.emptySet();

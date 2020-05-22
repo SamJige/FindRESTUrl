@@ -10,6 +10,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jige.bean.ControllerItem;
+import org.jige.util.StringTools;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -46,21 +47,17 @@ public class SearchFileService {
                                 .stream()
                                 .map(it -> new ControllerItem((PsiJavaFile) PsiManager.getInstance(project).findFile(it), null, null))
                                 .filter(file -> file.psiFile != null)
-//                                .peek(it -> System.out.println("it " + it.toString()))
                                 .flatMap(ControllerItem::genClass)
-//                                .peek(it -> System.out.println("it2 " + it.toString()))
                                 .flatMap(ControllerItem::genMethods)
-                                .peek(it -> System.out.println("it3 " + it.toString()))
+                                .peek(it -> StringTools.log("it3 ", it.toString()))
                                 .filter(it -> it.isGoodItem)
                                 .forEach(it -> {
-                                    System.out.println("final " + it.toString());
+                                    StringTools.log("final ", it.toString());
                                 });
 
-                        LoggerFactory.getLogger(getClass()).info("time cost -> {}ms", new Date().getTime() - begin);
+                        StringTools.log("time cost ", new Date().getTime() - begin, "ms");
                         notifier.notify(project, "time cost(ms):" + (new Date().getTime() - begin));
                     });
-                    LoggerFactory.getLogger(getClass()).info("files count: -> {}", virtualFiles.size());
-                    notifier.notify(project, "files count: ->" + virtualFiles.size());
                     return virtualFiles;
                 })
                 .whenComplete((list, err) ->
