@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class FileLoader {
     MyNotifier notifier = new MyNotifier();
@@ -22,8 +23,7 @@ public class FileLoader {
     /**
      * 直接从java文件里面搜索
      */
-    public List<ControllerItem> loadFile(Project project) {
-        List<ControllerItem> loadResult = new ArrayList<>();
+    public void loadFile(Project project, Consumer<List<ControllerItem>> loadedAction) {
         //使用异步操作 避免阻塞
         CompletableFuture
                 .supplyAsync(() -> {
@@ -46,16 +46,19 @@ public class FileLoader {
                                 .filter(file -> file.psiFile != null)
                                 .flatMap(ControllerItem::genClass)
                                 .flatMap(ControllerItem::genMethods)
-                                .peek(it -> StringTools.log("it3 ", it.toString()))
+//                                .peek(it -> StringTools.log("it3 ", it.toString()))
                                 .filter(it -> it.isGoodItem)
+                                .flatMap(ControllerItem::extractUrl)
                                 .forEach(fileResult::add);
 
-                        StringTools.log("time cost ", new Date().getTime() - begin, "ms");
+                        StringTools.log("supplyAsync size:", fileResult.size(), " time cost:", new Date().getTime() - begin, "ms");
                         notifier.notify(project, "time cost(ms):" + (new Date().getTime() - begin));
                     });
                     return fileResult;
                 })
-                .whenComplete((list, err) -> loadResult.addAll(list));
-        return loadResult;
+                .whenComplete((list, err) -> {
+                    StringTools.log("whenComplete size:", list.size());
+                    loadedAction.accept(list);
+                });
     }
 }

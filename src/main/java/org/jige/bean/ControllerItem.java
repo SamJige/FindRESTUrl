@@ -2,7 +2,6 @@ package org.jige.bean;
 
 import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
-import org.jige.util.StringTools;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +11,8 @@ public class ControllerItem {
     public PsiJavaFile psiFile;
     public PsiClass psiClass;
     public PsiMethod psiMethod;
-    public Set<String> url = new HashSet<>();
+    public Set<String> urls = new HashSet<>();
+    public String url;
     public boolean isGoodItem = false;
     Set<String> controllerUrlList = new HashSet<>();
     Set<String> mtdUrlList = new HashSet<>();
@@ -27,8 +27,15 @@ public class ControllerItem {
         findMyUrl();
     }
 
+    public ControllerItem(PsiJavaFile psiFile, PsiClass psiClass, PsiMethod psiMethod, String url) {
+        this.psiFile = psiFile;
+        this.psiClass = psiClass;
+        this.psiMethod = psiMethod;
+        this.url = url;
+    }
+
     public ControllerItem testInit(String... testUrl) {
-        url.addAll(Stream.of(testUrl).collect(Collectors.toSet()));
+        urls.addAll(Stream.of(testUrl).collect(Collectors.toSet()));
         return this;
     }
 
@@ -65,25 +72,25 @@ public class ControllerItem {
                     .ifPresent(psiAnnotation -> mtdUrlList.addAll(getUrlFromAnno(psiAnnotation)));
         }
 
-        url.addAll(controllerUrlList);
+        urls.addAll(controllerUrlList);
         if (controllerUrlList.size() == 0) {
-            url.clear();
-            url.addAll(mtdUrlList);
+            urls.clear();
+            urls.addAll(mtdUrlList);
         } else {
-            url.clear();
+            urls.clear();
             if (mtdUrlList.size() == 0) {
                 mtdUrlList.add("/");
             }
             //如果controller里面有url配置 要跟函数里面的url 组合起来
             for (String controllerUrl : controllerUrlList) {
                 for (String mtdUrl : mtdUrlList) {
-                    url.add((controllerUrl.endsWith("/") ? controllerUrl : controllerUrl + "/")
+                    urls.add((controllerUrl.endsWith("/") ? controllerUrl : controllerUrl + "/")
                             + (mtdUrl.startsWith("/") ? mtdUrl.substring(1) : mtdUrl));
                 }
             }
         }
-        url = url.stream().filter(StringUtils::isNotBlank).collect(Collectors.toSet());
-        isGoodItem = psiMethod != null && url.size() > 0;
+        urls = urls.stream().filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+        isGoodItem = psiMethod != null && urls.size() > 0;
         return this;
     }
 
@@ -108,6 +115,11 @@ public class ControllerItem {
                 .filter(mtd -> Stream.of(mtd.getAnnotations())
                         .anyMatch(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Mapping")))
                 .map(mtd -> new ControllerItem(psiFile, psiClass, mtd));
+    }
+
+    public Stream<ControllerItem> extractUrl() {
+        return urls.stream()
+                .map(it -> new ControllerItem(psiFile, psiClass, psiMethod, it));
     }
 
     /**
@@ -148,7 +160,7 @@ public class ControllerItem {
                 Stream.of(annotation.findAttributeValue("value"))
                         .filter(Objects::nonNull)
                         .map(PsiElement::getText)
-                        .peek(it -> StringTools.log("value: ", it))
+//                        .peek(it -> StringTools.log("value: ", it))
                         .collect(Collectors.toList());
         if (valueList.size() == 0) {
             return Collections.emptySet();
@@ -163,7 +175,7 @@ public class ControllerItem {
                 psiMethod != null ? psiMethod.getName() : "null",
                 psiFile != null ? psiFile.getName() : "null",
                 StringUtils.join(controllerUrlList, ","),
-                StringUtils.join(mtdUrlList, ","), arrToString(url));
+                StringUtils.join(mtdUrlList, ","), arrToString(urls));
     }
 
     private String arrToString(Collection<String> collection) {
