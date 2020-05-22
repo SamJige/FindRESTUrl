@@ -1,10 +1,5 @@
 package org.jige.service;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
-import com.intellij.openapi.keymap.KeymapUtil;
-import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -32,11 +27,12 @@ public class PopupDisplay {
 
     boolean listenerAdded = false;
 
-    public void setListData(List<ControllerItem> dataIn) {
+    public void setListData(String searchText, List<ControllerItem> dataIn) {
         StringTools.log("dataIn size: ", dataIn.size());
         data.clear();
         data.addAll(dataIn);
 
+        //todo 关键字高亮
         showResultList.setListData(data.stream()
                 .map(it -> String.format("%s     #%s%s     %s",
                         it.url,
@@ -124,21 +120,21 @@ public class PopupDisplay {
 
         ComponentPopupBuilder builder = JBPopupFactory.getInstance().createComponentPopupBuilder(panel, null)
                 .setCancelOnClickOutside(true)
-                .setAdText(KeymapUtil.getShortcutsText(CommonShortcuts.CTRL_ENTER.getShortcuts()) + " to finish")
+//                .setAdText(KeymapUtil.getShortcutsText(CommonShortcuts.CTRL_ENTER.getShortcuts()) + " to finish")
                 .setRequestFocus(true)
                 .setResizable(true)
                 .setMayBeParent(true);
 
         final JBPopup popup = builder.createPopup();
         popup.setMinimumSize(new Dimension(200, 90));
-        AnAction okAction = new DumbAwareAction() {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent e) {
-                unregisterCustomShortcutSet(popup.getContent());
-                popup.closeOk(e.getInputEvent());
-            }
-        };
-        okAction.registerCustomShortcutSet(CommonShortcuts.CTRL_ENTER, popup.getContent());
+//        AnAction okAction = new DumbAwareAction() {
+//            @Override
+//            public void actionPerformed(@NotNull AnActionEvent e) {
+//                unregisterCustomShortcutSet(popup.getContent());
+//                popup.closeOk(e.getInputEvent());
+//            }
+//        };
+//        okAction.registerCustomShortcutSet(CommonShortcuts.CTRL_ENTER, popup.getContent());
         return popup;
     }
 }

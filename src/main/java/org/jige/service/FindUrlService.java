@@ -46,13 +46,13 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                 currentText,
                 searchText -> {
                     if (StringUtils.isBlank(searchText)) {
-                        popupDisplay.setListData(Collections.emptyList());
+                        popupDisplay.setListData(searchText, Collections.emptyList());
                         return;
                     }
                     searchUrl(
                             project,
                             searchText,
-                            list -> popupDisplay.setListData(list));
+                            list -> popupDisplay.setListData(searchText, list));
                 },
                 (selected) -> {
                     if (selected.psiMethod != null) {
@@ -67,11 +67,12 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
         ////////
         //如果已经有复制的内容 则马上开始搜
         if (StringUtils.isNotBlank(currentText)) {
-            popupDisplay.setListData(Collections.emptyList());
+            popupDisplay.setListData(currentText, Collections.emptyList());
+            String finalCurrentText = currentText;
             searchUrl(
                     project,
                     currentText,
-                    list -> popupDisplay.setListData(list));
+                    list -> popupDisplay.setListData(finalCurrentText, list));
         }
         ////////////
         int listeners = popupDisplay.showResultList.getListSelectionListeners().length;
