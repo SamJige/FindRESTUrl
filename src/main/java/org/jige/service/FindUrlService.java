@@ -49,6 +49,7 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                         popupDisplay.setListData(searchText, Collections.emptyList());
                         return;
                     }
+                    popupDisplay.setLoading();
                     searchUrl(
                             project,
                             searchText,
@@ -67,8 +68,8 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
         ////////
         //如果已经有复制的内容 则马上开始搜
         if (StringUtils.isNotBlank(currentText)) {
-            popupDisplay.setListData(currentText, Collections.emptyList());
             String finalCurrentText = currentText;
+            popupDisplay.setLoading();
             searchUrl(
                     project,
                     currentText,

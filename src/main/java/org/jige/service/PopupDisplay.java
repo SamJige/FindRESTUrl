@@ -27,6 +27,12 @@ public class PopupDisplay {
 
     boolean listenerAdded = false;
 
+    public void setLoading() {
+        data.clear();
+        data.add(new ControllerItem());
+        showResultList.setListData(new String[]{"loading..."});
+    }
+
     public void setListData(String searchText, List<ControllerItem> dataIn) {
         StringTools.log("dataIn size: ", dataIn.size());
         data.clear();
@@ -34,11 +40,10 @@ public class PopupDisplay {
 
         //todo 关键字高亮
         showResultList.setListData(data.stream()
-                .map(it -> String.format("%s     #%s%s     %s",
+                .map(it -> String.format("%-80s #%s%s ",
                         it.url,
                         it.className,
-                        StringUtils.isNotBlank(it.methodName) ? "." + it.methodName : "",
-                        it.projectName))
+                        StringUtils.isNotBlank(it.methodName) ? "." + it.methodName : ""))
                 .toArray(String[]::new));
     }
 

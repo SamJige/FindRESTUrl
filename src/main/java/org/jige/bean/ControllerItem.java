@@ -29,7 +29,8 @@ public class ControllerItem {
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.psiMethod = psiMethod;
-        projectName = psiFile != null ? psiFile.getProject().getName() : null;
+        //fixme 子模块名称显示不出来
+        projectName = psiClass != null ? psiClass.getProject().getName() : null;
         fileName = psiFile != null ? psiFile.getName() : null;
         className = psiClass != null ? psiClass.getName() : null;
         methodName = psiMethod != null ? psiMethod.getName() : null;
