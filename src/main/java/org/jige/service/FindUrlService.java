@@ -41,8 +41,14 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                             project,
                             searchText,
                             list -> popupDisplay.setListData(list));
+                },
+                (selected) -> {
+                    StringTools.log("selected: ", selected.toString());
                 })
                 .showInBestPositionFor(e.getDataContext());
+
+        int listeners = popupDisplay.showResultList.getListSelectionListeners().length;
+        StringTools.log("listeners ", listeners);
     }
 
     void searchUrl(Project project, String searchText, Consumer<List<ControllerItem>> searchFinishedAct) {

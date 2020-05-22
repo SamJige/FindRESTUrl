@@ -30,6 +30,8 @@ public class PopupDisplay {
 
     List<ControllerItem> data = new ArrayList<>();
 
+    boolean listenerAdded = false;
+
     public void setListData(List<ControllerItem> dataIn) {
         StringTools.log("dataIn size: ", dataIn.size());
         data.clear();
@@ -37,47 +39,59 @@ public class PopupDisplay {
 
         showResultList.setListData(data.stream()
                 .map(it -> it.url).toArray(String[]::new));
+    }
 
+    abstract public static class MyKeyListener implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+        }
+
+        @Override
+        abstract public void keyReleased(KeyEvent e);
     }
 
     /**
      * https://www.programcreek.com/java-api-examples/index.php?api=com.intellij.openapi.ui.popup.JBPopup
      */
     @NotNull
-    public JBPopup createPopup(String currentText, Consumer<String> searchAction) {
+    public JBPopup createPopup(String currentText, Consumer<String> searchAction, Consumer<ControllerItem> naviToCode) {
         if (StringUtils.isNotBlank(currentText)) {
             searchTextField.setText(currentText);
         }
         JPanel panel = new JPanel(new BorderLayout());
 
         jScrollPanel.setViewportView(showResultList);
-        showResultList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        showResultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //        showResultList.setModel(new DefaultListModel<>());
-        //监听输入框事件
-        searchTextField.addKeyListener(new KeyListener() {
+        if (!listenerAdded) {
+            listenerAdded = true;
+            //监听输入框事件
+            searchTextField.addKeyListener(new MyKeyListener() {
 
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String text = searchTextField.getText();
-                showResultList.setListData(data.stream()
-                        .map(it -> it.url).toArray(String[]::new));
-                searchAction.accept(text);
-
-            }
-        });
-        //监听列表点击事件
-        showResultList.addListSelectionListener((event) -> {
-            int firstIdx = event.getFirstIndex();
-            int lastIdx = event.getFirstIndex();
-        });
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    String text = searchTextField.getText();
+                    searchAction.accept(text);
+                }
+            });
+            //监听列表点击事件
+            showResultList.addListSelectionListener((event) -> {
+                if (!event.getValueIsAdjusting()) {
+                    // 避免响应两次 https://blog.csdn.net/hepeng19861212/article/details/2121773
+                    return;
+                }
+                int selected = showResultList.getSelectedIndex();
+                StringTools.log("ListSelection index ", selected);
+                naviToCode.accept(data.get(selected));
+            });
+        }
         /////////////////////////////////////////////////////////////
         // 构造弹出框 使用netbeans构造再copy
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
