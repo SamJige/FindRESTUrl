@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.jige'
-version '1.0.1'
+version '1.0.2'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
@@ -13,6 +13,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+<br> 1.0.2 增加 @xxxMapping(path = "xxxx") 的情况判断      
 <br> 1.0.1 JList 弹出框调整尺寸的问题      
 <br> 1.0 支持搜索java controller 里面的url 搜索可能不精确 实现思路是搜索注解名字包含controller/mapping的类和函数 然后获取里面的value值 
       """
