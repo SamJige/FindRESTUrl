@@ -35,7 +35,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="Jige.FindUrl" class="org.jige.service.FindUrlService" text="FindUrl" description="Find REST url">
-            <add-to-group group-id="WindowMenu" anchor="last"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt N"/>
         </action>
