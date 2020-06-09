@@ -3,17 +3,19 @@ package org.jige.test;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.jige.bean.ControllerItem;
-import org.jige.util.StringTools;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
     @Override
@@ -31,24 +33,54 @@ public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
 //        fileLoader.loadFile(getProject());
     }
 
+    public static class FindJavaVisitor extends SimpleFileVisitor<Path> {
+        public List<Path> result;
+
+        public FindJavaVisitor(List<Path> result) {
+            this.result = result;
+        }
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+            if (file.toString().endsWith(".java")) {
+                result.add(file);
+            }
+            return FileVisitResult.CONTINUE;
+        }
+    }
+
+    public static class MyContent {
+        public String name;
+        public String content;
+
+        public MyContent(String name, String content) {
+            this.name = name;
+            this.content = content;
+            LoggerFactory.getLogger(getClass()).info("load file -> {}", name);
+        }
+    }
+
     //测试: 从java文件里面读取url
     public void test2() throws Exception {
-        String fileContent = Files.readString(Path.of("C:\\Users\\jige1103\\Documents\\codes\\csmp_scaner_center\\src\\main\\java\\com\\qgs\\core\\controller\\Info2Controller4.java"));
-        LoggerFactory.getLogger(getClass()).info("fileContent -> {}", fileContent);
-        PsiFile myFile = PsiFileFactory.getInstance(getProject()).createFileFromText("Info2Controller4", StdFileTypes.JAVA, fileContent);
-        LoggerFactory.getLogger(getClass()).info("myFile -> {}", myFile.getName());
-        Stream.of(myFile)
+        Path root = Path.of("C:\\Users\\jige1103\\Documents\\codes\\csmp_scaner_center\\src\\main\\java");
+
+        List<Path> result = new ArrayList<>();
+        Files.walkFileTree(root, new FindJavaVisitor(result));
+        List<MyContent> fileContentList = new ArrayList<>();
+        for (Path path : result) {
+            fileContentList.add(new MyContent(path.toFile().getName(), Files.readString(path)));
+        }
+
+        fileContentList.stream()
+                .map(fileContent -> PsiFileFactory.getInstance(getProject()).createFileFromText(fileContent.name, StdFileTypes.JAVA, fileContent.content))
                 .map(it -> new ControllerItem((PsiJavaFile) it, null, null))
-                .peek(it -> StringTools.log("it1 ", it.toString()))
                 .filter(file -> file.psiFile != null)
-                .peek(it -> StringTools.log("it2 ", it.toString()))
                 .flatMap(ControllerItem::genClass)
                 .flatMap(ControllerItem::genMethods)
-                .peek(it -> StringTools.log("it3 ", it.toString()))
                 .filter(it -> it.isGoodItem)
                 .flatMap(ControllerItem::extractUrl)
                 .forEach(it -> {
-                    LoggerFactory.getLogger(getClass()).info("it -> {}", it.url);
+                    LoggerFactory.getLogger(getClass()).info("it -> {}", it);
                 });
     }
 }
