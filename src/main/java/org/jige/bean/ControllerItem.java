@@ -48,8 +48,8 @@ public class ControllerItem {
         this.url = url;
     }
 
-    public ControllerItem testInit(String... testUrl) {
-        urls.addAll(Stream.of(testUrl).collect(Collectors.toSet()));
+    public ControllerItem testInit(String testUrl) {
+        url = testUrl;
         return this;
     }
 
@@ -194,7 +194,8 @@ public class ControllerItem {
     }
 
     public String toString() {
-        return String.format("[%s.%s()] -->\t [file:%s] \tcontrollerUrlList:%s \tmtdUrlList:%s --> \t[%s] ",
+        return String.format("%s : [%s.%s()] -->\t [file:%s] \tcontrollerUrlList:%s \tmtdUrlList:%s --> \t[%s]",
+                url,
                 className,
                 methodName,
                 fileName,
