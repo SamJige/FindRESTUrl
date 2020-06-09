@@ -1,8 +1,8 @@
 package org.jige.service;
 
 import org.jige.bean.ControllerItem;
-import org.jige.util.StringTools;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +15,15 @@ public class UrlSearchMatcherTest {
                 Arrays.asList(
                         new ControllerItem().testInit("/t1")
                         , new ControllerItem().testInit("/t2")
-                        , new ControllerItem().testInit("/t2", "/t2/tt2")
-                        , new ControllerItem().testInit("/tt2", "/tt2/tt2")
+                        , new ControllerItem().testInit("/t2/tt2")
+                        , new ControllerItem().testInit("/tt2")
+                        , new ControllerItem().testInit("/tt2/tt2")
+                        , new ControllerItem().testInit("tt3")
+                        , new ControllerItem().testInit("tt3/tt3")
+                        , new ControllerItem().testInit("/tt3/tt3")
                 ),
-                "/t2"
+                "t3"
         );
-        result.forEach(it -> StringTools.log("it ", it.toString()));
+        result.forEach(it -> LoggerFactory.getLogger(getClass()).info("it -> {}", it));
     }
 }
