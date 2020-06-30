@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.jige'
-version '1.0.3'
+version '1.0.4'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
@@ -13,6 +13,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+<br> 1.0.4 搜索url微量调整      
 <br> 1.0.3 搜索url微量调整      
 <br> 1.0.2 增加 @xxxMapping(path = "xxxx") 的情况判断      
 <br> 1.0.1 JList 弹出框调整尺寸的问题      

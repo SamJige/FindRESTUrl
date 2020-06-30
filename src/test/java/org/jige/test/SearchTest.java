@@ -62,7 +62,7 @@ public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
 
     //测试: 从java文件里面读取url
     public void test2() throws Exception {
-        Path root = Path.of("C:\\Users\\jige1103\\Documents\\codes\\csmp_scaner_center\\src\\main\\java");
+        Path root = Path.of("C:\\Users\\jige1103\\Documents\\codes\\gitall\\shaoxing2\\csmp-total\\biz\\src\\main\\java\\qgs\\csmp\\grade_protect\\controller");
 
         List<Path> result = new ArrayList<>();
         Files.walkFileTree(root, new FindJavaVisitor(result));
@@ -77,8 +77,8 @@ public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
                 .filter(file -> file.psiFile != null)
                 .flatMap(ControllerItem::genClass)
                 .flatMap(ControllerItem::genMethods)
-                .filter(it -> it.isGoodItem)
                 .flatMap(ControllerItem::extractUrl)
+                .filter(it -> it.isGoodItem)
                 .forEach(it -> {
                     LoggerFactory.getLogger(getClass()).info("it -> {}", it);
                 });

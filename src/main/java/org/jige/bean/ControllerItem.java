@@ -170,22 +170,22 @@ public class ControllerItem {
     }
 
     private Set<String> getUrlFromAnno(PsiAnnotation annotation) {
-//     @xxxMapping("xxxx")
-//     @xxxMapping(value = "xxxx")
-        List<String> valueList =
-                Stream.of(annotation.findAttributeValue("value"))
-                        .filter(Objects::nonNull)
-                        .map(PsiElement::getText)
+// @xxxMapping("xxxx")
+// @xxxMapping(value = "xxxx")
+        List<String> valueList = new ArrayList<>();
+        valueList.addAll(Stream.of(annotation.findAttributeValue("value"))
+                .filter(Objects::nonNull)
+                .map(PsiElement::getText)
 //                        .peek(it -> StringTools.log("value: ", it))
-                        .collect(Collectors.toList());
-        if (valueList.size() == 0) {
-//            @xxxMapping(path = "xxxx")
-            valueList = Stream.of(annotation.findAttributeValue("path"))
-                    .filter(Objects::nonNull)
-                    .map(PsiElement::getText)
+                .collect(Collectors.toList()));
+
+//  @xxxMapping(path = "xxxx")
+        valueList.addAll(Stream.of(annotation.findAttributeValue("path"))
+                .filter(Objects::nonNull)
+                .map(PsiElement::getText)
 //                        .peek(it -> StringTools.log("value: ", it))
-                    .collect(Collectors.toList());
-        }
+                .collect(Collectors.toList()));
+
         if (valueList.size() == 0) {
             return Collections.emptySet();
         }
