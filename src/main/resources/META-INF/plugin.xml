@@ -28,6 +28,16 @@
 <br> 3. click the search result will navigate to the code
     ]]></description>
 
+    <change-notes><![CDATA[
+<li> 1.0.4 little adjust of search function 搜索url微量调整  </li>
+<li> 1.0.3 little adjust of search function 搜索url微量调整  </li>
+<li> 1.0.2 add recognition of @xxxMapping(path = "xxxx") 增加path的情况判断  </li>
+<li> 1.0.1 JList panel size adjust 弹出框调整尺寸的问题  </li>
+<li> 1.0 support URL in Java WebApp Controller class file.
+search result is not always right because the search function just find method in controller which annotation contains word 'controller' and 'mapping'
+支持搜索java controller 里面的url 搜索可能不精确 实现思路是搜索注解名字包含controller/mapping的类和函数 然后获取里面的value值   </li>
+     ]]></change-notes>
+
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
