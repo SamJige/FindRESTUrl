@@ -4,31 +4,38 @@
     <vendor email="yhy90923@163.com" url="https://github.com/SamJige">SamJige</vendor>
 
     <description><![CDATA[
-<br> 搜索java代码里面的REST URL
-<br> Search Request URLs(something like @GetMapping(value = "xxxx") ) in Spring Web App
-<br>
-<br> 使用场景: 我知道某个URL被调用了 但是不知道具体实现代码在哪里 因为URL可能是controller和method里面的mapping拼接的 找起来很麻烦 这时候就可以用这个插件进行快速搜索
-<br>
-<br> Use Case: I want to debug a URL in my project bug not know exactly which file the RequestMapping is
-<br> and maybe I cannot find the code when I use "find in path" with the URL string because Controller and Method build it together.
-<br> Then I can use this plugin now
-<br>
-<br> 功能跟RestfulToolkit类似
-<br> function similar to RestfulToolkit
-<br>
-<br> 代码是开源的
-<br> code is open source
-<br>
-<br> 1. 使用 `ctrl+\` 快捷键弹出搜索框
-<br> 2. 输入要搜索的URL片段 剪贴板有值可以直接进入搜索框
-<br> 3. 点击搜索结果跳转到对应的代码
-<br>
-<br> 1. use `ctrl+\` key open the search dialog
-<br> 2. input url fragment to search where the code are. string in clipboard will be pasted into text input automatically
-<br> 3. click the search result will navigate to the code
+<p> Search Request URLs(something like @GetMapping(value = "xxxx") ) in Spring Web App  </p>
+<p> </p>
+<p> Use Case: I want to debug a URL in my project bug not know exactly which file the RequestMapping is
+    and maybe I cannot find the code when I use "find in path" with the URL string because Controller and Method build it together. </p>
+<p> </p>
+<p> Then I can use this plugin now </p>
+<p> </p>
+<p> function similar to RestfulToolkit  </p>
+<p> </p>
+<p> code is open source  </p>
+<p> </p>
+<p> 1. use `ctrl+\` key open the search dialog  </p>
+<p> 2. input url fragment to search where the code are. string in clipboard will be pasted into text input automatically  </p>
+<p> 3. click the search result will navigate to the code  </p>
+<hr>
+<p> 搜索java代码里面的REST URL  </p>
+<p> </p>
+<p> 使用场景: 我知道某个URL被调用了 但是不知道具体实现代码在哪里
+    因为URL可能是controller和method里面的mapping拼接的 找起来很麻烦 这时候就可以用这个插件进行快速搜索  </p>
+<p> </p>
+<p> 功能跟RestfulToolkit类似  </p>
+<p> </p>
+<p> 代码是开源的  </p>
+<p> </p>
+<p> 1. 使用 `ctrl+\` 快捷键弹出搜索框  </p>
+<p> 2. 输入要搜索的URL片段 剪贴板有值可以直接进入搜索框  </p>
+<p> 3. 点击搜索结果跳转到对应的代码  </p>
     ]]></description>
 
     <change-notes><![CDATA[
+<li> 1.0.6 add description 增加说明  </li>
+<li> 1.0.5 add description 增加说明  </li>
 <li> 1.0.4 little adjust of search function 搜索url微量调整  </li>
 <li> 1.0.3 little adjust of search function 搜索url微量调整  </li>
 <li> 1.0.2 add recognition of @xxxMapping(path = "xxxx") 增加path的情况判断  </li>
