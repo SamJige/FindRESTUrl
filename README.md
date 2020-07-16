@@ -1,5 +1,7 @@
 # FindRESTUrl
 
+plugin for intellij idea
+
 Search Request URLs(something like @GetMapping(value = "xxxx") ) in Spring Web App  
 
 Use Case: I want to debug a URL in my project bug not know exactly which file the RequestMapping is
@@ -16,6 +18,8 @@ code is open source
 3. click the search result will navigate to the code  
 
 ----
+
+plugin for intellij idea
 
 搜索java代码里面的REST URL  
 

@@ -1,5 +1,6 @@
 package org.jige.bean;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,6 +20,7 @@ public class ControllerItem {
 
     public String projectName;
     public String fileName;
+    public String fileWithPath;
     public String className;
     public String methodName;
 
@@ -32,6 +34,7 @@ public class ControllerItem {
         //fixme 子模块名称显示不出来
         projectName = psiClass != null ? psiClass.getProject().getName() : null;
         fileName = psiFile != null ? psiFile.getName() : null;
+        fileWithPath = getFilePath();
         className = psiClass != null ? psiClass.getName() : null;
         methodName = psiMethod != null ? psiMethod.getName() : null;
         findMyUrl();
@@ -43,9 +46,28 @@ public class ControllerItem {
         this.psiMethod = psiMethod;
         projectName = psiFile != null ? psiFile.getProject().getName() : null;
         fileName = psiFile != null ? psiFile.getName() : null;
+        fileWithPath = getFilePath();
         className = psiClass != null ? psiClass.getName() : null;
         methodName = psiMethod != null ? psiMethod.getName() : null;
         this.url = url;
+    }
+
+    private String getFilePath() {
+        String basePath = psiFile.getProject().getBasePath();
+        VirtualFile vfile = psiFile.getVirtualFile();
+        String filePath = "";
+        if (vfile != null) {
+            filePath = vfile.getPath();
+        }
+        if (StringUtils.isNotBlank(basePath)) {
+            filePath = filePath.replace(basePath, "");
+        }
+        String[] pathList = StringUtils.split(filePath, "/");
+        if (pathList != null && pathList.length >= 2) {
+            filePath = pathList[0] + "/.../" + pathList[pathList.length - 1];
+        }
+        return psiFile != null ?
+                (vfile != null ? filePath : fileName) : null;
     }
 
     public ControllerItem testInit(String testUrl) {
@@ -198,7 +220,7 @@ public class ControllerItem {
                 url,
                 className,
                 methodName,
-                fileName,
+                fileWithPath,
                 StringUtils.join(controllerUrlList, ","),
                 StringUtils.join(mtdUrlList, ","), arrToString(urls));
     }

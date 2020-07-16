@@ -34,6 +34,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+<li> 1.0.7 display file relative path in search result 搜索结果里面增加显示文件的相对路径  </li>
 <li> 1.0.6 add description 增加说明  </li>
 <li> 1.0.5 add description 增加说明  </li>
 <li> 1.0.4 little adjust of search function 搜索url微量调整  </li>
