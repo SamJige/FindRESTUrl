@@ -121,7 +121,8 @@ public class PopupDisplay {
         );
         /////////////////////////////////////////////////////////////
 
-        ComponentPopupBuilder builder = JBPopupFactory.getInstance().createComponentPopupBuilder(panel, null)
+        ComponentPopupBuilder builder = JBPopupFactory.getInstance()
+                .createComponentPopupBuilder(panel, searchTextField)
                 .setCancelOnClickOutside(true)
 //                .setAdText(KeymapUtil.getShortcutsText(CommonShortcuts.CTRL_ENTER.getShortcuts()) + " to finish")
                 .setRequestFocus(true)
