@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.jige'
-version '1.0.7'
+version '1.0.8'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {

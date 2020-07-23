@@ -34,6 +34,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
+<li> 1.0.8 Change search result list to table. Set default focus to search field. Fix an Exception of getting text from clipboard.
+搜索结果列表改成表格的形式. 搜索框获得默认焦点. 修复一个从剪贴板读取字符的报错.  </li>
 <li> 1.0.7 display file relative path in search result 搜索结果里面增加显示文件的相对路径  </li>
 <li> 1.0.6 add description 增加说明  </li>
 <li> 1.0.5 add description 增加说明  </li>
