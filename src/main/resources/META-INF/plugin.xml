@@ -13,7 +13,7 @@
 <p> </p>
 <p> function similar to RestfulToolkit  </p>
 <p> </p>
-<p> code is open source  </p>
+<p> code is open source. see https://github.com/SamJige/FindRESTUrl </p>
 <p> </p>
 <p> 1. use `ctrl+\` key open the search dialog  </p>
 <p> 2. input url fragment to search where the code are. string in clipboard will be pasted into text input automatically  </p>
@@ -26,7 +26,7 @@
 <p> </p>
 <p> 功能跟RestfulToolkit类似  </p>
 <p> </p>
-<p> 代码是开源的  </p>
+<p> 代码是开源的 地址 https://github.com/SamJige/FindRESTUrl </p>
 <p> </p>
 <p> 1. 使用 `ctrl+\` 快捷键弹出搜索框  </p>
 <p> 2. 输入要搜索的URL片段 剪贴板有值可以直接进入搜索框  </p>
