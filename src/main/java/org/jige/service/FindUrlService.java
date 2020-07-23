@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,13 +35,23 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
         Project project = e.getData(PlatformDataKeys.PROJECT);
 
         String currentText = "";
+        //获取当前复制的内容
+        Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
         try {
-            //获取当前复制的内容
-            currentText = (String) Toolkit.getDefaultToolkit()
-                    .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                currentText = (String) t.getTransferData(DataFlavor.stringFlavor);
+            }
         } catch (Exception error) {
-            LoggerFactory.getLogger(getClass()).error("error ->", error);
+            LoggerFactory.getLogger(getClass()).info("fail to read clipboard -> {}", error.getMessage());
         }
+
+//        try {
+//            //获取当前复制的内容
+//            currentText = (String) Toolkit.getDefaultToolkit()
+//                    .getSystemClipboard().getData(DataFlavor.stringFlavor);
+//        } catch (Exception error) {
+//            LoggerFactory.getLogger(getClass()).error("error ->", error);
+//        }
 
         popupDisplay.createPopup(
                 currentText,
