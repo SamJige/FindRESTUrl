@@ -3,22 +3,13 @@ plugins {
 }
 
 group 'org.jige'
-version '1.0.4'
+version '1.0.7'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.1'
     localPath 'D:\\sft\\ideaIC-2020.1.win'
     plugins = ['java']
-}
-patchPluginXml {
-    changeNotes """
-<br> 1.0.4 搜索url微量调整      
-<br> 1.0.3 搜索url微量调整      
-<br> 1.0.2 增加 @xxxMapping(path = "xxxx") 的情况判断      
-<br> 1.0.1 JList 弹出框调整尺寸的问题      
-<br> 1.0 支持搜索java controller 里面的url 搜索可能不精确 实现思路是搜索注解名字包含controller/mapping的类和函数 然后获取里面的value值 
-      """
 }
 test {
     systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.1.win"

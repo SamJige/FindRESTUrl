@@ -40,8 +40,9 @@ public class PopupDisplay {
 
         //todo 关键字高亮
         showResultList.setListData(data.stream()
-                .map(it -> String.format("%-80s #%s%s ",
+                .map(it -> String.format("%-80s %s#%s%s ",
                         it.url,
+                        it.fileWithPath,
                         it.className,
                         StringUtils.isNotBlank(it.methodName) ? "." + it.methodName : ""))
                 .toArray(String[]::new));
