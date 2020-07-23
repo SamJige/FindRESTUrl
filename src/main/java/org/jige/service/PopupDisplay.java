@@ -3,66 +3,43 @@ package org.jige.service;
 import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBScrollPane;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jige.bean.ControllerItem;
+import org.jige.ui.MyUrlTable;
+import org.jige.ui.MyUrlTable2;
+import org.jige.util.MyKeyListener;
 import org.jige.util.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class PopupDisplay {
     JTextField searchTextField = new JTextField();
-    JScrollPane jScrollPanel = new JBScrollPane();
-    JList<String> showResultList = new JBList<>();
 
     List<ControllerItem> data = new ArrayList<>();
+    MyUrlTable myTable = new MyUrlTable2();
+    boolean inputListenerAdded = false;
 
-    boolean listenerAdded = false;
-
+    //搜索过程中的显示
     public void setLoading() {
         data.clear();
         data.add(new ControllerItem());
-        showResultList.setListData(new String[]{"loading..."});
+        myTable.setLoading();
     }
 
+    //搜索完成的显示
     public void setListData(String searchText, List<ControllerItem> dataIn) {
         StringTools.log("dataIn size: ", dataIn.size());
         data.clear();
         data.addAll(dataIn);
-
-        //todo 关键字高亮
-        showResultList.setListData(data.stream()
-                .map(it -> String.format("%-80s %s#%s%s ",
-                        it.url,
-                        it.fileWithPath,
-                        it.className,
-                        StringUtils.isNotBlank(it.methodName) ? "." + it.methodName : ""))
-                .toArray(String[]::new));
+        myTable.setListData(searchText, dataIn);
     }
 
-    abstract public static class MyKeyListener implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-        }
-
-        @Override
-        abstract public void keyReleased(KeyEvent e);
-    }
 
     /**
      * https://www.programcreek.com/java-api-examples/index.php?api=com.intellij.openapi.ui.popup.JBPopup
@@ -77,50 +54,23 @@ public class PopupDisplay {
             searchTextField.setText(currentText);
         }
         searchTextField.requestFocusInWindow();
-        JPanel panel = new JPanel(new BorderLayout());
-
-        jScrollPanel.setViewportView(showResultList);
-        showResultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 //        showResultList.setModel(new DefaultListModel<>());
-        if (!listenerAdded) {
-            listenerAdded = true;
+        if (!inputListenerAdded) {
+            inputListenerAdded = true;
             //监听输入框事件
             searchTextField.addKeyListener(new MyKeyListener() {
-
                 @Override
                 public void keyReleased(KeyEvent e) {
                     String text = searchTextField.getText();
                     searchAction.accept(text);
                 }
             });
-            //监听列表点击事件
-            showResultList.addListSelectionListener((event) -> {
-                if (!event.getValueIsAdjusting()) {
-                    // 避免响应两次 https://blog.csdn.net/hepeng19861212/article/details/2121773
-                    return;
-                }
-                int selected = showResultList.getSelectedIndex();
-                StringTools.log("ListSelection index ", selected);
-                naviToCode.accept(data.get(selected));
-            });
         }
-        /////////////////////////////////////////////////////////////
-        // 构造弹出框 使用netbeans构造再copy
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                        .addComponent(jScrollPanel)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
-        );
-        /////////////////////////////////////////////////////////////
+
+        JPanel panel = myTable.initPanel(selected -> {
+            StringTools.log("ListSelection index ", selected);
+            naviToCode.accept(data.get(selected));
+        }, searchTextField);
 
         ComponentPopupBuilder builder = JBPopupFactory.getInstance()
                 .createComponentPopupBuilder(panel, searchTextField)

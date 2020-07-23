@@ -87,8 +87,8 @@ public class FindUrlService extends AnAction implements ChooseByNameContributorE
                     list -> popupDisplay.setListData(finalCurrentText, list));
         }
         ////////////
-        int listeners = popupDisplay.showResultList.getListSelectionListeners().length;
-        StringTools.log("listeners ", listeners);
+//        int listeners = popupDisplay.showResultList.getListSelectionListeners().length;
+//        StringTools.log("listeners ", listeners);
     }
 
     //搜索功能 读取java文件 然后搜索指定的url
