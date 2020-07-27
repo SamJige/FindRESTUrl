@@ -16,7 +16,7 @@ public class MyUrlTable2 implements MyUrlTable {
     JBTable showResultTable = new JBTable();
     JBScrollPane jScrollPanel = new JBScrollPane();
     JPanel panel;
-    String[] head = new String[]{"URL", "PATH", "METHOD"};
+    public static final String[] head = new String[]{"URL", "PATH", "METHOD"};
 
     public JPanel initPanel(Consumer<Integer> selectEventAct, JTextField searchTextField) {
         if (panel != null) {

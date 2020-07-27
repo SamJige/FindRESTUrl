@@ -69,7 +69,9 @@ public class PopupDisplay {
 
         JPanel panel = myTable.initPanel(selected -> {
             StringTools.log("ListSelection index ", selected);
-            naviToCode.accept(data.get(selected));
+            if (data.size() > selected) {
+                naviToCode.accept(data.get(selected));
+            }
         }, searchTextField);
 
         ComponentPopupBuilder builder = JBPopupFactory.getInstance()
