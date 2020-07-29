@@ -16,9 +16,9 @@ public class MyUrlTable2 implements MyUrlTable {
     JBTable showResultTable = new JBTable();
     JBScrollPane jScrollPanel = new JBScrollPane();
     JPanel panel;
-    public static final String[] head = new String[]{"URL", "PATH", "METHOD"};
 
     public JPanel initPanel(Consumer<Integer> selectEventAct, JTextField searchTextField) {
+        String[] head = new String[]{"URL", "PATH", "METHOD"};
         if (panel != null) {
             return panel;
         }
@@ -60,11 +60,13 @@ public class MyUrlTable2 implements MyUrlTable {
     }
 
     public void setLoading() {
+        String[] head = new String[]{"URL", "PATH", "METHOD"};
         showResultTable.setModel(new DefaultTableModel(new Object[][]{
                 {"loading...", "", ""},}, head));
     }
 
     public void setListData(String searchText, List<ControllerItem> dataIn) {
+        String[] head = new String[]{"URL", "PATH", "METHOD"};
         //todo 关键字高亮
         Object[][] dataArr = dataIn.stream()
                 .map(it -> new Object[]{
