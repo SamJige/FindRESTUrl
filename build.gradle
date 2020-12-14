@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    }
+}
 plugins {
     id 'org.jetbrains.intellij' version '0.4.19'
 }
@@ -8,13 +14,20 @@ version '1.0.9'
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
 //    version '2020.2'
-    localPath 'D:\\sft\\ideaIC-2020.2.win'
+    localPath 'D:\\sft\\ideaIC-2020.3.win'
     plugins = ['java']
 }
 test {
-    systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.2.win"
+    systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.3.win"
 }
 //提交插件配置
 publishPlugin {
     token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+}
+
+allprojects {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    }
 }
