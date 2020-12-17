@@ -1,7 +1,7 @@
 package org.jige.service;
 
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
@@ -40,7 +40,7 @@ public class FileLoader {
                         然后对文件进行筛选 找到全部的java类 要有controller注解
                         然后找到controller类里面全部的方法 要有mapping注解
                          */
-                        FileTypeIndex.getFiles(StdFileTypes.JAVA, GlobalSearchScope.projectScope(project))
+                        FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.projectScope(project))
                                 .stream()
                                 .map(it -> new ControllerItem((PsiJavaFile) PsiManager.getInstance(project).findFile(it), null, null))
                                 .filter(file -> file.psiFile != null)

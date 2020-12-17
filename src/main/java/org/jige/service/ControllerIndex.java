@@ -1,6 +1,6 @@
 package org.jige.service;
 
-import com.intellij.openapi.fileTypes.StdFileTypes;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
@@ -87,7 +87,7 @@ public class ControllerIndex extends FileBasedIndexExtension<String, String> {
     @NotNull
     @Override
     public FileBasedIndex.InputFilter getInputFilter() {
-        return new DefaultFileTypeSpecificInputFilter(StdFileTypes.JAVA);
+        return new DefaultFileTypeSpecificInputFilter(JavaFileType.INSTANCE);
     }
 
     @Override

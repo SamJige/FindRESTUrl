@@ -1,6 +1,6 @@
 package org.jige.test;
 
-import com.intellij.openapi.fileTypes.StdFileTypes;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
@@ -37,7 +37,7 @@ public class SearchTest extends LightJavaCodeInsightFixtureTestCase {
         }
 
         fileContentList.stream()
-                .map(fileContent -> PsiFileFactory.getInstance(getProject()).createFileFromText(fileContent.name, StdFileTypes.JAVA, fileContent.content))
+                .map(fileContent -> PsiFileFactory.getInstance(getProject()).createFileFromText(fileContent.name, JavaFileType.INSTANCE, fileContent.content))
                 .map(it -> new ControllerItem((PsiJavaFile) it, null, null))
                 .filter(file -> file.psiFile != null)
                 .flatMap(ControllerItem::genClass)
