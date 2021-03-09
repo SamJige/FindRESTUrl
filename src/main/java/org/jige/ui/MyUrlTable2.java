@@ -12,9 +12,23 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * 单例模式
+ */
 public class MyUrlTable2 implements MyUrlTable {
-    JBTable showResultTable = new JBTable();
-    JBScrollPane jScrollPanel = new JBScrollPane();
+    private static MyUrlTable2 instance = new MyUrlTable2();
+
+    private MyUrlTable2() {
+        showResultTable = new JBTable();
+        jScrollPanel = new JBScrollPane();
+    }
+
+    public static MyUrlTable2 getInstance() {
+        return instance;
+    }
+
+    JBTable showResultTable;
+    JBScrollPane jScrollPanel;
     JPanel panel;
 
     public JPanel initPanel(Consumer<Integer> selectEventAct, JTextField searchTextField) {

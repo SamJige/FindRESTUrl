@@ -22,7 +22,7 @@ public class PopupDisplay {
     JTextField searchTextField = new JTextField();
 
     List<ControllerItem> data = new ArrayList<>();
-    MyUrlTable myTable = new MyUrlTable2();
+    MyUrlTable myTable = MyUrlTable2.getInstance();
     boolean inputListenerAdded = false;
 
     //搜索过程中的显示
