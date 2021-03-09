@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 public class FindUrlService extends AnAction implements ChooseByNameContributorEx {
     FileLoader fileLoader = new FileLoader();
     UrlSearchMatcher urlSearchMatcher = new UrlSearchMatcher();
-    PopupDisplay popupDisplay = new PopupDisplay();
+    PopupDisplay popupDisplay = PopupDisplay.getInstance();
 
     @Override
     public void actionPerformed(AnActionEvent e) {

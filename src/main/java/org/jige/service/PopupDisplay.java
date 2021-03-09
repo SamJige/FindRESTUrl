@@ -19,6 +19,15 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PopupDisplay {
+    private static PopupDisplay instance = new PopupDisplay();
+
+    private PopupDisplay() {
+    }
+
+    public static PopupDisplay getInstance() {
+        return instance;
+    }
+
     JTextField searchTextField = new JTextField();
 
     List<ControllerItem> data = new ArrayList<>();
