@@ -9,16 +9,16 @@ plugins {
 }
 
 group 'org.jige'
-version '1.0.13'
+version '1.0.14'
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-//    version '2020.2'
-    localPath 'D:\\sft\\ideaIC-2020.3.win'
+//    version '2021.1'
+    localPath 'D:\\sft\\ideaIC-2021.1.win'
     plugins = ['java']
 }
 test {
-    systemProperty "idea.home.path", "D:\\sft\\ideaIC-2020.3.win"
+    systemProperty "idea.home.path", "D:\\sft\\ideaIC-2021.1.win"
 }
 //提交插件配置
 publishPlugin {

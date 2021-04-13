@@ -34,6 +34,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+<li> 1.0.14 update for 2021.1 </li>
 <li> 1.0.13 Fix potential multithreading issues 修复潜在的多线程问题 </li>
 <li> 1.0.12 remove @Deprecated code 修改了@Deprecated的代码</li>
 <li> 1.0.11 remove @Deprecated code: change StdFileTypes.JAVA to JavaFileType.INSTANCE 修改了@Deprecated的代码</li>
