@@ -78,7 +78,7 @@ public class PopupDisplay {
 
         JPanel panel = myTable.initPanel(selected -> {
             StringTools.log("ListSelection index ", selected);
-            if (data.size() > selected) {
+            if (data.size() > selected && selected >= 0) {
                 naviToCode.accept(data.get(selected));
             }
         }, searchTextField);
