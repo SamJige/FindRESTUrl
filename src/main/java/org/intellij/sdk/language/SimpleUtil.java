@@ -22,7 +22,7 @@ public class SimpleUtil {
     public static List<SimpleProperty> findProperties(Project project, String key) {
         List<SimpleProperty> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(SimpleFileType.getInstance(), GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             SimpleFile simpleFile = (SimpleFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (simpleFile != null) {
@@ -42,7 +42,7 @@ public class SimpleUtil {
     public static List<SimpleProperty> findProperties(Project project) {
         List<SimpleProperty> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(SimpleFileType.getInstance(), GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             SimpleFile simpleFile = (SimpleFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (simpleFile != null) {

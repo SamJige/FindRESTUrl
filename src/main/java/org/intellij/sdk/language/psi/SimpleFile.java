@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class SimpleFile extends PsiFileBase {
     public SimpleFile(@NotNull FileViewProvider viewProvider) {
-        super(viewProvider, SimpleLanguage.INSTANCE);
+        super(viewProvider, SimpleLanguage.getInstance());
     }
 
     @NotNull
     @Override
     public FileType getFileType() {
-        return SimpleFileType.INSTANCE;
+        return SimpleFileType.getInstance();
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PopupDisplay {
-    private static PopupDisplay instance = new PopupDisplay();
+    private static final PopupDisplay instance = new PopupDisplay();
 
     private PopupDisplay() {
     }
@@ -32,7 +32,7 @@ public class PopupDisplay {
 
     List<ControllerItem> data = new ArrayList<>();
     MyUrlTable myTable = MyUrlTable2.getInstance();
-    boolean inputListenerAdded = false;
+    volatile boolean inputListenerAdded = false;
 
     //搜索过程中的显示
     public void setLoading() {
@@ -58,7 +58,7 @@ public class PopupDisplay {
      * @param naviToCode   跳转功能的入口 传入选择的项 点击结果列表的似乎触发
      */
     @NotNull
-    public JBPopup createPopup(String currentText, Consumer<String> searchAction, Consumer<ControllerItem> naviToCode) {
+    public synchronized JBPopup createPopup(String currentText, Consumer<String> searchAction, Consumer<ControllerItem> naviToCode) {
         if (StringUtils.isNotBlank(currentText)) {
             searchTextField.setText(currentText);
         }
