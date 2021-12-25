@@ -34,6 +34,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+<li> 1.0.17 update for 2021.3 </li>
 <li> 1.0.16 update for 2021.2.1 </li>
 <li> 1.0.15 bug fix </li>
 <li> 1.0.14 update for 2021.1 </li>
@@ -66,9 +67,9 @@ search result is not always right because the search function just find method i
         <!--        <fileBasedIndex implementation="org.jige.service.ControllerIndex"/>-->
     </extensions>
 
-    <applicationListeners>
-        <listener class="org.jige.service.ReloadListener" topic="com.intellij.ide.plugins.DynamicPluginListener"/>
-    </applicationListeners>
+    <!--    <applicationListeners>-->
+    <!--        <listener class="org.jige.service.ReloadListener" topic="com.intellij.ide.plugins.DynamicPluginListener"/>-->
+    <!--    </applicationListeners>-->
 
     <actions>
         <!-- Add your actions here -->

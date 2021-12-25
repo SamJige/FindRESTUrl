@@ -12,7 +12,6 @@ import org.jige.util.StringTools;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -33,7 +32,7 @@ public class FileLoader {
                     ReadAction.run(() -> {
 //                        Collection<String> keys = ControllerIndex.getAllKeys(project);
 //                        LoggerFactory.getLogger(getClass()).info("keys -> {}", keys.size());
-                        long begin = new Date().getTime();
+                        long begin = System.currentTimeMillis();
 
                         /*
                         首先找到所有的java文件
@@ -51,8 +50,8 @@ public class FileLoader {
                                 .flatMap(ControllerItem::extractUrl)
                                 .forEach(fileResult::add);
 
-                        StringTools.log("supplyAsync size:", fileResult.size(), " time cost:", new Date().getTime() - begin, "ms");
-                        notifier.notify(project, "time cost(ms):" + (new Date().getTime() - begin));
+                        StringTools.log("supplyAsync size:", fileResult.size(), " time cost:", System.currentTimeMillis() - begin, "ms");
+                        notifier.notify(project, "time cost(ms):" + (System.currentTimeMillis() - begin));
                     });
                     return fileResult;
                 })

@@ -138,7 +138,10 @@ public class ControllerItem {
                 //only public
                 .filter(clazz -> clazz.hasModifierProperty(PsiModifier.PUBLIC))
                 .filter(clazz -> Stream.of(clazz.getAnnotations())
-                        .anyMatch(anno -> Objects.requireNonNull(anno.getQualifiedName()).endsWith("Controller")))
+                        .anyMatch(anno ->
+                                Objects.requireNonNull(anno.getQualifiedName()).endsWith("Controller")
+                                        || Objects.requireNonNull(anno.getQualifiedName()).endsWith("Mapping")
+                        ))
                 .map(clazz -> new ControllerItem(psiFile, clazz, null));
     }
 
